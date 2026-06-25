@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Login — Shishya Yantra</title>
+  <meta name="description" content="Log in to Shishya Yantra. Your student survival system.">
+  <link rel="stylesheet" href="signup.css">
+</head>
+<body>
+
+<!-- Animated Background Blobs -->
+<div class="bg-blobs">
+  <div class="bg-blob b1"></div>
+  <div class="bg-blob b2"></div>
+</div>
+
+<!-- Navbar -->
+<nav class="navbar">
+  <a href="#" class="nav-logo">Shishya Yantra</a>
+</nav>
+
+<div class="split-container">
+  
+  <!-- Left Pane -->
+  <div class="left-pane">
+    <h1 class="project-title">Shishya Yantra</h1>
+    <h2 class="tagline">Welcome back.</h2>
+    <p class="description">Your student survival system for attendance, studies, and academic balance. Log in to continue your journey.</p>
+    
+
+    <!-- Floating Orb Visual -->
+    <div class="visual-layer">
+      <div class="orb"></div>
+      <div class="orb-ring"></div>
+    </div>
+  </div>
+
+  <!-- Right Pane (Form) -->
+  <div class="right-pane">
+    <div class="form-wrapper">
+      <div class="form-card">
+        <div class="form-header">
+          <h2>Log into your account</h2>
+          <p>Resume your academic comeback.</p>
+        </div>
+
+        <form id="loginForm" novalidate>
+          <div class="form-group">
+            <label>Email Address</label>
+            <input type="email" id="email" class="form-control" placeholder="john@college.edu" required>
+            <div class="error-msg" id="errEmail">Please enter a valid email.</div>
+          </div>
+
+          <div class="form-group">
+            <label>Password</label>
+            <input type="password" id="password" class="form-control" placeholder="••••••••" required>
+            <div class="error-msg" id="errPass">Password is required.</div>
+          </div>
+
+          <button type="submit" class="btn-submit">Enter Dashboard</button>
+        </form>
+
+        <div class="form-footer">
+          Don't have an account? <a href="index.html">Sign Up</a>
+        </div>
+        
+        <p class="microcopy">"Ready to check your Bunk Balance?"</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Toast for success/error message -->
+<div id="toast" style="display:none;position:fixed;bottom:24px;left:50%;transform:translateX(-50%);padding:12px 28px;border-radius:50px;font-size:.88rem;font-weight:600;background:rgba(53,89,73,.9);color:#BBE3CE;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(187,227,206,.15);box-shadow:0 8px 30px rgba(0,0,0,.4);z-index:999;"></div>
+
+<!-- Selection Modal -->
+<div class="modal-overlay" id="selectionModal">
+  <div class="modal-card">
+    <h2>Choose Your Path</h2>
+    <p>Where would you like to go today?</p>
+    <div class="space-options">
+      <div class="space-card" onclick="window.location.href='bunk.html'">
+        <div class="space-icon">🎯</div>
+        <div class="space-title">Bunk Tantra</div>
+        <div class="space-desc">Manage attendance & plan bunks</div>
+      </div>
+      <div class="space-card" onclick="window.location.href='study.html'">
+        <div class="space-icon">📓</div>
+        <div class="space-title">Sincere Mode</div>
+        <div class="space-desc">Track goals & study progress</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="login.js"></script>
+</body>
+</html>

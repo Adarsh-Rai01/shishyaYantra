@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Study Mantra — Built for bunkers, made for learners</title>
+  <meta name="description" content="Focus deep, manage your study goals, and unlock your academic comeback with Study Mantra.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- Scroll Progress Bar -->
+<div class="scroll-progress" id="scrollProgress"></div>
+<!-- Floating Particles -->
+<div class="particles-container" id="particlesContainer"></div>
+
+<!-- ===== NAVBAR ===== -->
+<nav class="navbar" id="navbar">
+  <a href="#" class="nav-logo">Study Mantra</a>
+  <div class="nav-links" id="navLinks">
+    <a href="index.html">Home</a>
+    <a href="#dashboard">Dashboard</a>
+    <a href="#timer">Timer</a>
+    <a href="#goals">Goals</a>
+    <a href="#analytics">Analytics</a>
+    <a href="bunk.html" class="nav-btn outline">🎯 Bunker Mode</a>
+    <a href="study.html" class="nav-btn filled">📓 Sincere Mode</a>
+  </div>
+  <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- ===== HERO ===== -->
+<section class="hero" id="dashboard" data-sticky-hero>
+  <div class="hero-content">
+    <div class="hero-badge"><span class="dot"></span> Study Mantra Active</div>
+    <h1>Study Mantra</h1>
+    <p class="tagline">Built for bunkers, made for learners.</p>
+    <p class="subtitle">Focus deeply, stay accountable, and complete your academic comeback.</p>
+    <div class="hero-cta">
+      <button class="btn-primary" onclick="document.getElementById('timer').scrollIntoView({behavior:'smooth'})">Start Focusing ⚡</button>
+      <button class="btn-ghost" onclick="document.getElementById('goals').scrollIntoView({behavior:'smooth'})">View Goals</button>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="orb-wrapper">
+      <div class="orb">
+        <span class="orb-percent" id="heroStreak">0d</span>
+        <span class="orb-label">Current Streak</span>
+      </div>
+      <div class="orb-ring">
+        <span class="orb-dot"></span>
+        <span class="orb-dot"></span>
+        <span class="orb-dot"></span>
+      </div>
+    </div>
+    <div class="float-card fc1">
+      <div class="fc-val" id="heroMinutes">0m</div>
+      Focus Session
+    </div>
+    <div class="float-card fc2">
+      <div class="fc-val" id="heroProgress">0%</div>
+      Goals Done
+    </div>
+  </div>
+</section>
+
+<!-- ===== ANALYTICS ===== -->
+<section class="section" id="analytics">
+  <div class="section-header scroll-reveal">
+    <h2>📊 Sincere Stats</h2>
+    <p>Numbers don't lie. Track your academic consistency.</p>
+  </div>
+  <div class="stats-grid">
+    <div class="glass-card scroll-reveal stat-card" data-reveal="left">
+      <div class="stat-lbl">Focus Time Today</div>
+      <div class="stat-val" id="statFocusTime">0 mins</div>
+      <p style="font-size:.8rem;color:var(--text-dim)">Total concentrated study minutes</p>
+    </div>
+    
+    <div class="glass-card scroll-reveal stat-card" data-reveal="scale">
+      <div class="stat-lbl">Academic Streak</div>
+      <div class="stat-val" id="statStreak">0 Days</div>
+      <div class="streak-bar">
+        <div class="streak-bar-fill" id="streakFill" style="width: 0%"></div>
+      </div>
+      <p style="font-size:.8rem;color:var(--text-dim);margin-top:4px">Keep focusing daily to build your streak!</p>
+    </div>
+
+    <div class="glass-card scroll-reveal stat-card" data-reveal="right">
+      <div class="stat-lbl">Goal Accomplishment</div>
+      <div class="stat-val" id="statGoalRatio">0/0</div>
+      <p style="font-size:.8rem;color:var(--text-dim)" id="statGoalDesc">No goals set yet</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOCUS TIMER ===== -->
+<section class="section" id="timer">
+  <div class="section-header scroll-reveal">
+    <h2>⏱️ Focus Timer</h2>
+    <p>Shut down notifications. Open full-screen focus.</p>
+  </div>
+  <div class="glass-card scroll-reveal" data-reveal="scale">
+    <div class="timer-container">
+      <div class="timer-modes">
+        <button class="timer-mode-btn active" data-mode="study" onclick="setTimerMode('study')">Study Focus</button>
+        <button class="timer-mode-btn" data-mode="short" onclick="setTimerMode('short')">Short Break</button>
+        <button class="timer-mode-btn" data-mode="long" onclick="setTimerMode('long')">Long Break</button>
+      </div>
+
+      <div class="timer-circle-wrapper">
+        <svg class="timer-svg" viewBox="0 0 240 240">
+          <circle class="timer-ring-bg" cx="120" cy="120" r="100"></circle>
+          <circle class="timer-ring-progress" id="timerProgressRing" cx="120" cy="120" r="100"></circle>
+        </svg>
+        <div class="timer-content">
+          <div class="timer-time" id="timerDisplay">25:00</div>
+          <div class="timer-status" id="timerLabel">Study Session</div>
+        </div>
+      </div>
+
+      <div class="timer-controls">
+        <button class="btn-timer-secondary" id="btnTimerReset" onclick="resetTimer()" title="Reset">
+          <span>🔄</span>
+        </button>
+        <button class="btn-timer-primary" id="btnTimerStart" onclick="toggleTimer()" title="Start/Pause">
+          <span id="startIcon">▶</span>
+        </button>
+        <button class="btn-timer-secondary" id="btnTimerSkip" onclick="skipTimer()" title="Skip Section">
+          <span>⏭️</span>
+        </button>
+      </div>
+
+      <div class="timer-duration-control" id="durationControl">
+        <span class="duration-label">Focus Duration</span>
+        <div class="duration-stepper">
+          <button class="stepper-btn" onclick="adjustFocusTime(-5)" title="Decrease 5 min">−</button>
+          <span class="stepper-value" id="focusDurationDisplay">25</span>
+          <span class="stepper-unit">min</span>
+          <button class="stepper-btn" onclick="adjustFocusTime(5)" title="Increase 5 min">+</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== GOAL CHECKLIST ===== -->
+<section class="section" id="goals">
+  <div class="section-header scroll-reveal">
+    <h2>📓 Study Checklist</h2>
+    <p>Deconstruct your syllabus. Finish it piece by piece.</p>
+  </div>
+  <div class="glass-card scroll-reveal" data-reveal="scale">
+    <div class="goals-header">
+      <div>
+        <div class="card-title"><span class="icon">✏️</span> Academic Goals</div>
+        <div class="card-subtitle" style="margin-bottom:0">Keep track of upcoming study tasks and assignments</div>
+      </div>
+      <button class="btn-sm" onclick="openGoalModal()">+ Add Study Goal</button>
+    </div>
+    
+    <div class="goal-list" id="goalList">
+      <div style="text-align:center;padding:30px;color:var(--text-dim);font-size:.88rem">
+        You have no current goals. Create one to begin your comeback!
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== STUDY BALANCE ===== -->
+<section class="section" id="study-balance">
+  <div class="section-header scroll-reveal">
+    <h2>⚖️ Study Balance</h2>
+    <p>Overall health of your academic comeback.</p>
+  </div>
+  <div class="glass-card scroll-reveal" data-reveal="scale">
+    <div class="balance-grid">
+      <div class="balance-stat">
+        <div class="lbl">Completed Topics</div>
+        <div class="val" id="balCompleted">0</div>
+      </div>
+      <div class="balance-stat">
+        <div class="lbl">Pending Topics</div>
+        <div class="val" id="balPending">0</div>
+      </div>
+      <div class="balance-stat">
+        <div class="lbl">Goal Completion</div>
+        <div class="val" id="balGoalRatio">0%</div>
+      </div>
+    </div>
+    <div class="balance-status-box mt-3">
+      <div class="status-lbl">Comeback Status</div>
+      <div class="status-val" id="balStatus">Kal Se Pakka Zone</div>
+      <p class="status-micro" id="balMicro">Your academic comeback is loading...</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SUBJECT PROGRESS MAP ===== -->
+<section class="section" id="subject-map">
+  <div class="section-header scroll-reveal">
+    <h2>🗺️ Subject Progress Map</h2>
+    <p>Track syllabus progress per subject.</p>
+  </div>
+  <div class="glass-card scroll-reveal" data-reveal="scale">
+    <div class="goals-header">
+      <div>
+        <div class="card-title"><span class="icon">📚</span> My Subjects</div>
+        <div class="card-subtitle" style="margin-bottom:0">Keep track of syllabus completion</div>
+      </div>
+      <button class="btn-sm" onclick="openSubjectModal()">+ Add Subject</button>
+    </div>
+    
+    <div class="subject-list" id="subjectList">
+      <!-- Subjects render here -->
+    </div>
+  </div>
+</section>
+
+<!-- ===== ACADEMIC COMEBACK METER ===== -->
+<section class="section" id="comeback-meter">
+  <div class="section-header scroll-reveal">
+    <h2>📈 Academic Comeback Meter</h2>
+    <p>Calculate your comeback energy.</p>
+  </div>
+  <div class="glass-card scroll-reveal center-text" data-reveal="scale">
+    <div class="meter-wrapper">
+      <div class="meter-circle">
+        <svg viewBox="0 0 100 100">
+          <path class="meter-bg" d="M 10 80 A 45 45 0 1 1 90 80" fill="none" stroke-width="8" stroke-linecap="round"/>
+          <path class="meter-fill" id="meterFill" d="M 10 80 A 45 45 0 1 1 90 80" fill="none" stroke-width="8" stroke-linecap="round" stroke-dasharray="210" stroke-dashoffset="210"/>
+        </svg>
+        <div class="meter-score" id="meterScore">0</div>
+      </div>
+    </div>
+    <h3 class="meter-title" id="meterTitle">Kal Se Pakka Zone</h3>
+    <p class="meter-desc" id="meterDesc">Syllabus ko panic nahi, plan se todte hain.</p>
+  </div>
+</section>
+
+
+
+<!-- ===== STUDY FORECAST ===== -->
+<section class="section" id="study-forecast">
+  <div class="section-header scroll-reveal">
+    <h2>📅 Study Forecast</h2>
+    <p>Panic mat karo, plan banao.</p>
+  </div>
+  <div class="glass-card scroll-reveal" data-reveal="scale">
+    <div class="forecast-form">
+      <div class="form-row">
+        <div class="form-group">
+          <label>Exam Date</label>
+          <input type="date" id="forecastDate">
+        </div>
+        <div class="form-group">
+          <label>Daily Study Hours</label>
+          <input type="number" id="forecastHours" min="1" max="16" placeholder="e.g. 4">
+        </div>
+      </div>
+      <button class="btn-primary w-100" onclick="calculateForecast()">Generate Plan</button>
+    </div>
+    <div class="forecast-results mt-3" id="forecastResults" style="display:none">
+      <div class="grid-2">
+        <div class="res-box">
+          <div class="res-lbl">Days Left</div>
+          <div class="res-val" id="resDays">0</div>
+        </div>
+        <div class="res-box">
+          <div class="res-lbl">Topics/Day</div>
+          <div class="res-val" id="resTopicsPerDay">0</div>
+        </div>
+      </div>
+      <div class="status-box mt-3 text-center">
+        <div class="res-lbl">Plan Status</div>
+        <div class="res-val" id="resStatus" style="font-size: 1.2rem; margin-top: 5px;">Chill Plan</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== REVISION RADAR ===== -->
+<section class="section" id="revision-radar">
+  <div class="section-header scroll-reveal">
+    <h2>🔄 Revision Radar</h2>
+    <p>Track revision status of your topics.</p>
+  </div>
+  <div class="glass-card scroll-reveal" data-reveal="scale">
+    <div class="goals-header">
+      <div>
+        <div class="card-title"><span class="icon">🎯</span> Revision Tracker</div>
+        <div class="card-subtitle" style="margin-bottom:0">Keep track of topic readiness</div>
+      </div>
+      <button class="btn-sm" onclick="openRevisionModal()">+ Add Topic</button>
+    </div>
+    
+    <div class="revision-stats mb-3" style="display:flex;gap:10px;">
+      <span class="rev-stat-badge filled">Exam Ready: <span id="revReadyCount">0</span></span>
+      <span class="rev-stat-badge outline">Total Topics: <span id="revTotalCount">0</span></span>
+    </div>
+
+    <div class="revision-list" id="revisionList">
+      <!-- Revisions render here -->
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer class="footer">
+  <p>made by <span>Adarsh</span> 🎓 · Built for bunkers, made for learners.</p>
+</footer>
+
+<!-- ===== ADD GOAL MODAL ===== -->
+<div class="modal-overlay" id="goalModal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3 id="modalTitle">Create Study Goal</h3>
+      <button class="modal-close" onclick="closeGoalModal()">✕</button>
+    </div>
+    <div class="form-group">
+      <label>Subject / Class</label>
+      <input type="text" id="modalGoalSubject" placeholder="e.g. Mathematics II" list="subjectsList">
+      <datalist id="subjectsList"></datalist>
+    </div>
+    <div class="form-group">
+      <label>Goal Description</label>
+      <input type="text" id="modalGoalTitle" placeholder="e.g. Solve past 3 years integration questions">
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Priority Level</label>
+        <select id="modalGoalPriority">
+          <option value="low">Low Priority</option>
+          <option value="medium" selected>Medium Priority</option>
+          <option value="high">High Priority</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Target Date</label>
+        <input type="date" id="modalGoalDate">
+      </div>
+    </div>
+    <button class="btn-calc" onclick="saveGoal()">Save Goal ✓</button>
+  </div>
+</div>
+
+<!-- ===== ADD SUBJECT MODAL ===== -->
+<div class="modal-overlay" id="subjectModal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3 id="subjectModalTitle">Add Subject</h3>
+      <button class="modal-close" onclick="closeSubjectModal()">✕</button>
+    </div>
+    <div class="form-group">
+      <label>Subject Name</label>
+      <input type="text" id="modalSubName" placeholder="e.g. Physics">
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Total Topics</label>
+        <input type="number" id="modalSubTotal" min="1" placeholder="10">
+      </div>
+      <div class="form-group">
+        <label>Completed Topics</label>
+        <input type="number" id="modalSubCompleted" min="0" placeholder="0">
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Priority Level</label>
+      <select id="modalSubPriority">
+        <option value="low">Low Priority</option>
+        <option value="medium" selected>Medium Priority</option>
+        <option value="high">High Priority</option>
+      </select>
+    </div>
+    <button class="btn-calc" onclick="saveSubject()">Save Subject ✓</button>
+  </div>
+</div>
+
+<!-- ===== ADD REVISION MODAL ===== -->
+<div class="modal-overlay" id="revisionModal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3 id="revisionModalTitle">Add Revision Topic</h3>
+      <button class="modal-close" onclick="closeRevisionModal()">✕</button>
+    </div>
+    <div class="form-group">
+      <label>Subject</label>
+      <select id="modalRevSubject">
+        <option value="">Select a Subject...</option>
+        <!-- populated from subjects -->
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Topic Name</label>
+      <input type="text" id="modalRevName" placeholder="e.g. Kinematics">
+    </div>
+    <button class="btn-calc" onclick="saveRevision()">Add Topic ✓</button>
+  </div>
+</div>
+
+<script src="study.js"></script>
+</body>
+</html>

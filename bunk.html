@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Bunk Tantra — Built for bunkers, made for learners</title>
+  <meta name="description" content="Plan your bunks, protect your attendance, and survive college smarter with Bunk Tantra.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- Scroll Progress Bar -->
+<div class="scroll-progress" id="scrollProgress"></div>
+<!-- Floating Particles -->
+<div class="particles-container" id="particlesContainer"></div>
+
+<!-- ===== NAVBAR ===== -->
+<nav class="navbar" id="navbar">
+  <a href="#" class="nav-logo">Bunk Tantra</a>
+  <div class="nav-links" id="navLinks">
+    <a href="index.html">Home</a>
+    <a href="#dashboard">Dashboard</a>
+    <a href="#subjects">Subjects</a>
+    <a href="#forecast">Forecast</a>
+    <a href="#suggestions">Suggestions</a>
+    <a href="bunk.html" class="nav-btn filled">🎯 Bunker Mode</a>
+    <a href="study.html" class="nav-btn outline">📓 Sincere Mode</a>
+  </div>
+  <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- ===== HERO ===== -->
+<section class="hero" id="dashboard" data-sticky-hero>
+  <div class="hero-content">
+    <div class="hero-badge"><span class="dot"></span> Bunker Mode Active</div>
+    <h1>Bunk Tantra</h1>
+    <p class="tagline">Built for bunkers, made for learners.</p>
+    <p class="subtitle">Plan your bunks, protect your attendance, and survive college smarter.</p>
+    <div class="hero-cta">
+      <button class="btn-primary" onclick="document.getElementById('bunkBalance').scrollIntoView({behavior:'smooth'})">Calculate Now</button>
+      <button class="btn-ghost" onclick="document.getElementById('subjects').scrollIntoView({behavior:'smooth'})">View Subjects</button>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="orb-wrapper">
+      <div class="orb">
+        <span class="orb-percent" id="orbPercent">—</span>
+        <span class="orb-label">Overall Attendance</span>
+      </div>
+      <div class="orb-ring">
+        <span class="orb-dot"></span>
+        <span class="orb-dot"></span>
+        <span class="orb-dot"></span>
+      </div>
+    </div>
+    <div class="float-card fc1">
+      <div class="fc-val" id="fcBunks">—</div>
+      Bunks Available
+    </div>
+    <div class="float-card fc2">
+      <div class="fc-val" id="fcStatus">—</div>
+      Safety Status
+    </div>
+  </div>
+</section>
+
+<!-- ===== BUNK BALANCE ===== -->
+<section class="section" id="bunkBalance">
+  <div class="section-header scroll-reveal">
+    <h2>⚖️ Bunk Balance</h2>
+    <p>Bunk smart, not blind.</p>
+  </div>
+  <div class="grid-2">
+    <div class="glass-card scroll-reveal" data-reveal="left">
+      <div class="card-title"><span class="icon">📊</span> Total Attendance Calculator</div>
+      <div class="card-subtitle">Enter your overall numbers</div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Total Classes Held</label>
+          <input type="number" id="totalClasses" placeholder="e.g. 120" min="0">
+        </div>
+        <div class="form-group">
+          <label>Classes Attended</label>
+          <input type="number" id="attendedClasses" placeholder="e.g. 95" min="0">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Min Required Attendance %</label>
+        <input type="number" id="requiredPercent" placeholder="e.g. 75" min="0" max="100" value="75">
+      </div>
+      <button class="btn-calc" id="btnCalcBalance" onclick="calculateBalance()">Calculate Balance ⚡</button>
+    </div>
+    <div class="glass-card scroll-reveal" id="balanceResults" data-reveal="right">
+      <div class="card-title"><span class="icon">📋</span> Results</div>
+      <div class="card-subtitle">Attendance is breathing. Keep it alive.</div>
+      <div class="result-panel" id="balanceResultPanel">
+        <div style="text-align:center;padding:30px;color:var(--text-dim);font-size:.88rem">
+          Enter your attendance data and hit calculate ↗
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SUBJECT RISK MAP ===== -->
+<section class="section" id="subjects">
+  <div class="section-header scroll-reveal">
+    <h2>🗺️ Subject Risk Map</h2>
+    <p>Your professor may not notice, but the portal will.</p>
+  </div>
+  <div class="glass-card scroll-reveal" data-reveal="scale">
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:16px">
+      <div>
+        <div class="card-title"><span class="icon">📚</span> Subject-wise Tracker</div>
+        <div class="card-subtitle" style="margin-bottom:0">Track attendance per subject</div>
+      </div>
+      <button class="btn-sm" id="btnAddSubject" onclick="openModal()">+ Add Subject</button>
+    </div>
+    <div style="overflow-x:auto">
+      <table class="subject-table" id="subjectTable">
+        <thead>
+          <tr>
+            <th>Subject</th>
+            <th>Total</th>
+            <th>Attended</th>
+            <th>Attendance</th>
+            <th>Bunks Available</th>
+            <th>Risk</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="subjectBody"></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ===== DANGER METER ===== -->
+<section class="section" id="dangerMeter">
+  <div class="section-header scroll-reveal">
+    <h2>🚨 Danger Meter</h2>
+    <p>75% ke border pe khade ho. Don't jump.</p>
+  </div>
+  <div class="glass-card scroll-reveal" data-reveal="scale">
+    <div class="card-title"><span class="icon">⚡</span> Safety Status Dashboard</div>
+    <div class="card-subtitle">Live risk assessment for all your subjects</div>
+    <div class="meter-grid" id="meterGrid">
+      <div style="text-align:center;padding:30px;color:var(--text-dim);font-size:.88rem;grid-column:1/-1">
+        Add subjects and calculate balance to see danger levels
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== BUNK FORECAST ===== -->
+<section class="section" id="forecast">
+  <div class="section-header scroll-reveal">
+    <h2>🔮 Bunk Forecast</h2>
+    <p>Predict your attendance and plan upcoming bunks wisely.</p>
+  </div>
+  <div class="glass-card scroll-reveal" data-reveal="scale">
+    <div class="card-title"><span class="icon">📅</span> Bunk Forecast</div>
+    <div class="card-subtitle">Plan your upcoming classes and bunks</div>
+    <div class="form-group">
+      <label>Forecast For</label>
+      <select id="forecastSubject">
+        <option value="overall">📊 Overall Attendance</option>
+      </select>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Upcoming Classes</label>
+        <input type="number" id="upcomingClasses" placeholder="e.g. 20" min="0">
+      </div>
+      <div class="form-group">
+        <label>Planned Bunks</label>
+        <input type="number" id="plannedBunks" placeholder="e.g. 5" min="0">
+      </div>
+    </div>
+    <button class="btn-calc" onclick="calculateForecast()">Predict Future 🔮</button>
+    <div id="forecastResult"></div>
+  </div>
+</section>
+
+<!-- ===== SAFE ESCAPE PLAN ===== -->
+<section class="section" id="suggestions">
+  <div class="section-header scroll-reveal">
+    <h2>🛡️ Safe Escape Plan</h2>
+    <p>Know which subject to bunk — and which to protect.</p>
+  </div>
+  <div class="glass-card scroll-reveal" data-reveal="scale">
+    <div class="card-title"><span class="icon">🛡️</span> Escape Recommendations</div>
+    <div class="card-subtitle">Recommended actions based on your current risk profile</div>
+    <div id="escapeResult">
+      <div style="text-align:center;padding:30px;color:var(--text-dim);font-size:.88rem">
+        Add subjects to see bunk recommendations
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== RECOVERY MISSION ===== -->
+<section class="section" id="recovery">
+  <div class="section-header scroll-reveal">
+    <h2>🏥 Recovery Mission</h2>
+    <p>Time to grind. Attend like your CGPA depends on it — because it does.</p>
+  </div>
+  <div class="glass-card scroll-reveal" data-reveal="scale">
+    <div class="card-title"><span class="icon">💪</span> Attendance Recovery Planner</div>
+    <div class="card-subtitle">How many classes you need to attend continuously to bounce back</div>
+    <div id="recoveryResult">
+      <div style="text-align:center;padding:30px;color:var(--text-dim);font-size:.88rem">
+        Calculate your bunk balance first to see recovery data
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer class="footer">
+  <p>made by <span>Adarsh</span> 🎓 · Built for bunkers, made for learners.</p>
+</footer>
+
+<!-- ===== MODAL ===== -->
+<div class="modal-overlay" id="subjectModal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3 id="modalTitle">Add Subject</h3>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="form-group">
+      <label>Subject Name</label>
+      <input type="text" id="modalSubjectName" placeholder="e.g. Mathematics">
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Total Classes</label>
+        <input type="number" id="modalTotalClasses" placeholder="e.g. 40" min="0">
+      </div>
+      <div class="form-group">
+        <label>Attended</label>
+        <input type="number" id="modalAttended" placeholder="e.g. 32" min="0">
+      </div>
+    </div>
+    <button class="btn-calc" id="btnModalSave" onclick="saveSubject()">Save Subject ✓</button>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
