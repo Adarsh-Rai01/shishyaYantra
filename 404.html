@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>404 — Lost in Campus | Shishya Yantra</title>
+  <meta name="description" content="This page was bunked or doesn't exist. Head back to Shishya Yantra.">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+  <link rel="manifest" href="site.webmanifest">
+  <meta name="theme-color" content="#0B1413">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .not-found-container {
+      min-height: calc(100vh - 120px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+    }
+    .not-found-card {
+      max-width: 580px;
+      width: 100%;
+      text-align: center;
+      padding: 48px 36px;
+      background: rgba(17, 31, 29, 0.75);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
+    }
+    .badge-404 {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px;
+      border-radius: 50px;
+      background: rgba(255, 107, 107, 0.15);
+      border: 1px solid rgba(255, 107, 107, 0.35);
+      color: #ff8585;
+      font-size: 0.84rem;
+      font-weight: 600;
+      margin-bottom: 24px;
+    }
+    .code-404 {
+      font-size: 5rem;
+      font-weight: 900;
+      line-height: 1;
+      letter-spacing: -2px;
+      background: linear-gradient(135deg, #6BFFB8, #BBE3CE, #355949);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 12px;
+    }
+    .title-404 {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 14px;
+    }
+    .desc-404 {
+      color: var(--text-dim);
+      font-size: 0.98rem;
+      line-height: 1.6;
+      margin-bottom: 32px;
+    }
+    .actions-404 {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: center;
+    }
+    .btn-nav {
+      padding: 12px 22px;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 0.92rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: var(--transition);
+    }
+    .btn-bunk {
+      background: linear-gradient(135deg, #355949, #548973);
+      color: #FFFFFF;
+      box-shadow: 0 4px 15px rgba(84, 137, 115, 0.3);
+    }
+    .btn-bunk:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(84, 137, 115, 0.45);
+    }
+    .btn-study {
+      background: rgba(53, 89, 73, 0.25);
+      border: 1px solid rgba(187, 227, 206, 0.25);
+      color: #BBE3CE;
+    }
+    .btn-study:hover {
+      background: rgba(53, 89, 73, 0.4);
+      transform: translateY(-2px);
+    }
+  </style>
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="index.html" class="nav-logo">Shishya Yantra</a>
+  <div class="nav-links">
+    <a href="bunk.html" class="nav-btn filled">🎯 Bunker Mode</a>
+    <a href="study.html" class="nav-btn outline">📓 Sincere Mode</a>
+  </div>
+</nav>
+
+<div class="not-found-container">
+  <div class="not-found-card">
+    <div class="badge-404">🚨 0% Attendance Here</div>
+    <div class="code-404">404</div>
+    <h1 class="title-404">You bunked the wrong class.</h1>
+    <p class="desc-404">
+      The page you're trying to reach doesn't exist or was moved to another semester. Don't worry, your safe bunks are still intact.
+    </p>
+    <div class="actions-404">
+      <a href="bunk.html" class="btn-nav btn-bunk">🎯 Go to Bunk Tantra</a>
+      <a href="study.html" class="btn-nav btn-study">📓 Go to Study Mantra</a>
+      <a href="index.html" class="btn-nav btn-study">🏠 Home</a>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <p>made by <span>Adarsh</span> 🎓 · Built for bunkers, made for learners.</p>
+</footer>
+
+</body>
+</html>
+

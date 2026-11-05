@@ -407,7 +407,6 @@ function timerComplete() {
     showToast('Break Over! Time to get back to work 📓');
     // Switch to study — will restore savedStudyTime if it exists
     setTimerMode('study');
-  initDashboardFeatures();
   }
 }
 

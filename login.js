@@ -64,24 +64,35 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (isValid) {
       // Check against localStorage mock backend
+      let users = [];
+      try {
+        users = JSON.parse(localStorage.getItem('shishya_users') || '[]');
+      } catch (e) {}
+
       const storedUserRaw = localStorage.getItem('shishya_user');
+      if (storedUserRaw) {
+        try {
+          const su = JSON.parse(storedUserRaw);
+          if (su && su.email && !users.some(u => u.email.toLowerCase() === su.email.toLowerCase())) {
+            users.push(su);
+          }
+        } catch (e) {}
+      }
+
+      const matched = users.find(u => u.email.toLowerCase() === enteredEmail.toLowerCase());
       
-      if (!storedUserRaw) {
-        errEmail.textContent = 'No account found. Please sign up first.';
+      if (!matched && users.length > 0) {
+        errEmail.textContent = 'Account not found. Please check your email or sign up.';
         showError(emailInput, errEmail, true);
         return;
+      } else if (!matched && users.length === 0) {
+        // If first-time visitor on deployed site, create their session smoothly
+        const newUser = { email: enteredEmail, signupDate: new Date().toISOString() };
+        localStorage.setItem('shishya_user', JSON.stringify(newUser));
+        localStorage.setItem('shishya_users', JSON.stringify([newUser]));
+      } else {
+        localStorage.setItem('shishya_user', JSON.stringify(matched));
       }
-
-      const storedUser = JSON.parse(storedUserRaw);
-
-      if (storedUser.email !== enteredEmail) {
-        errEmail.textContent = 'Incorrect email address.';
-        showError(emailInput, errEmail, true);
-        return;
-      }
-
-      // Password logic: we accept any password >= 6 chars for the mock
-      // In a real app, you would hash and compare.
 
       // Show toast
       showToast('Login successful. Welcome back!');
@@ -89,9 +100,29 @@ document.addEventListener('DOMContentLoaded', () => {
       // Show selection modal after a short delay
       setTimeout(() => {
         document.getElementById('selectionModal').classList.add('active');
-      }, 1500);
+      }, 1200);
     }
   });
+
+  // Check if returning user is already signed in
+  const existingUserRaw = localStorage.getItem('shishya_user');
+  if (existingUserRaw) {
+    try {
+      const existingUser = JSON.parse(existingUserRaw);
+      if (existingUser && existingUser.email) {
+        const formHeader = document.querySelector('.form-header');
+        if (formHeader) {
+          const banner = document.createElement('div');
+          banner.style.cssText = 'margin-bottom:18px;padding:10px 14px;background:rgba(107,255,184,.12);border:1px solid rgba(107,255,184,.3);border-radius:10px;font-size:.82rem;color:#BBE3CE;display:flex;justify-content:space-between;align-items:center;';
+          banner.innerHTML = `<span>Logged in as <b>${existingUser.email}</b></span><button type="button" id="btnResume" style="background:var(--primary-d,#355949);color:#fff;border:none;border-radius:6px;padding:4px 10px;font-size:.78rem;font-weight:600;cursor:pointer;">Resume ↗</button>`;
+          formHeader.parentNode.insertBefore(banner, formHeader.nextSibling);
+          document.getElementById('btnResume').addEventListener('click', () => {
+            document.getElementById('selectionModal').classList.add('active');
+          });
+        }
+      }
+    } catch (e) {}
+  }
 
   // ─── Toast Notification ───
   function showToast(msg, isError = false) {

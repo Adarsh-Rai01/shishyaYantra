@@ -72,6 +72,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
       // Store in localStorage (mock backend)
       localStorage.setItem('shishya_user', JSON.stringify(user));
+      try {
+        const users = JSON.parse(localStorage.getItem('shishya_users') || '[]');
+        if (!users.some(u => u.email.toLowerCase() === user.email.toLowerCase())) {
+          users.push(user);
+          localStorage.setItem('shishya_users', JSON.stringify(users));
+        }
+      } catch (e) {}
 
       // Show toast
       showToast('Welcome to Shishya Yantra. Your student journey starts now.');
@@ -79,9 +86,29 @@ document.addEventListener('DOMContentLoaded', () => {
       // Show selection modal after a short delay
       setTimeout(() => {
         document.getElementById('selectionModal').classList.add('active');
-      }, 1500);
+      }, 1200);
     }
   });
+
+  // Check if returning user is already signed in
+  const existingUserRaw = localStorage.getItem('shishya_user');
+  if (existingUserRaw) {
+    try {
+      const existingUser = JSON.parse(existingUserRaw);
+      if (existingUser && existingUser.email) {
+        const formHeader = document.querySelector('.form-header');
+        if (formHeader) {
+          const banner = document.createElement('div');
+          banner.style.cssText = 'margin-bottom:18px;padding:10px 14px;background:rgba(107,255,184,.12);border:1px solid rgba(107,255,184,.3);border-radius:10px;font-size:.82rem;color:#BBE3CE;display:flex;justify-content:space-between;align-items:center;';
+          banner.innerHTML = `<span>Logged in as <b>${existingUser.email}</b></span><button type="button" id="btnResume" style="background:var(--primary-d,#355949);color:#fff;border:none;border-radius:6px;padding:4px 10px;font-size:.78rem;font-weight:600;cursor:pointer;">Resume ↗</button>`;
+          formHeader.parentNode.insertBefore(banner, formHeader.nextSibling);
+          document.getElementById('btnResume').addEventListener('click', () => {
+            document.getElementById('selectionModal').classList.add('active');
+          });
+        }
+      }
+    } catch (e) {}
+  }
 
   // ─── Toast Notification ───
   function showToast(msg) {
